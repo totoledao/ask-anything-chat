@@ -8,6 +8,10 @@ import (
 	"os"
 	"os/signal"
 
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
+	"github.com/gorilla/websocket"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
 	"github.com/totoledao/ask-anything-chat/internal/api"
@@ -40,7 +44,22 @@ func main() {
 		panic(err)
 	}
 
-	handler := api.NewHandler(pgstore.New(pool))
+	r := chi.NewRouter()
+	r.Use(middleware.RequestID, middleware.Recoverer, middleware.Logger)
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"https://*", "http://*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: false,
+		MaxAge:           300,
+	}))
+
+	upgrader := websocket.Upgrader{
+		CheckOrigin: func(r *http.Request) bool { return true },
+	}
+
+	handler := api.NewHandler(pgstore.New(pool), r, upgrader)
 
 	go func() {
 		if err := http.ListenAndServe(":8080", handler); err != nil {
