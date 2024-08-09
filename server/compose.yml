@@ -26,6 +26,16 @@ services:
     volumes:
       - pgadmin:/var/lib/pgadmin
 
+  app:
+    build: .
+    ports:
+      - ${APP_PORT}:8080
+    restart: unless-stopped
+    environment:
+      POSTGRES_HOST: db
+    depends_on:
+      - db
+
 volumes:
   db:
     driver: local

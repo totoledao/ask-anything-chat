@@ -61,8 +61,9 @@ func main() {
 
 	handler := api.NewHandler(pgstore.New(pool), r, upgrader)
 
+	port := ":" + os.Getenv("APP_PORT")
 	go func() {
-		if err := http.ListenAndServe(":8080", handler); err != nil {
+		if err := http.ListenAndServe(port, handler); err != nil {
 			if !errors.Is(err, http.ErrServerClosed) {
 				panic(err)
 			}
