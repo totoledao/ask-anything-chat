@@ -108,10 +108,11 @@ To get a local copy up and running follow these simple steps.
 
 <!-- USAGE EXAMPLES -->
 
-<!-- ## Usage -->
+## Usage
 
-<!-- ![web-login](https://github.com/totoledao/totoledao/assets/40635662/60743232-836d-4190-96bc-828b88c560ed)
-Create an account or Login using your GitHub account -->
+<video src="https://github.com/user-attachments/assets/cf0011cb-4a43-4881-9552-651910d9a5d2" loop controls></video>
+Create a room and share the link to invite people to join.
+The messages and reactions sent are updated to all users in realtime and messages are sorted by number of reactions.
 
 <!-- LICENSE -->
 
