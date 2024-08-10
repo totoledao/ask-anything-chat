@@ -150,16 +150,18 @@ export function Messages({ roomID }: { roomID?: string }) {
 
   return (
     <ol className="list-decimal list-outside px-3 space-y-8">
-      {data.map((msg) => (
-        <Message
-          key={msg.id}
-          roomID={roomID}
-          messageID={msg.id}
-          message={msg.message}
-          answered={msg.answered}
-          reaction_count={msg.reaction_count}
-        />
-      ))}
+      {data
+        .sort((a, b) => b.reaction_count - a.reaction_count)
+        .map((msg) => (
+          <Message
+            key={msg.id}
+            roomID={roomID}
+            messageID={msg.id}
+            message={msg.message}
+            answered={msg.answered}
+            reaction_count={msg.reaction_count}
+          />
+        ))}
     </ol>
   );
 }
