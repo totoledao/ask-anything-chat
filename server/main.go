@@ -11,7 +11,6 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
-	"github.com/gorilla/websocket"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
 	"github.com/totoledao/ask-anything-chat/internal/api"
@@ -55,11 +54,7 @@ func main() {
 		MaxAge:           300,
 	}))
 
-	upgrader := websocket.Upgrader{
-		CheckOrigin: func(r *http.Request) bool { return true },
-	}
-
-	handler := api.NewHandler(pgstore.New(pool), r, upgrader)
+	handler := api.NewHandler(pgstore.New(pool), r)
 
 	port := ":" + os.Getenv("APP_PORT")
 	go func() {

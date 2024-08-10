@@ -27,9 +27,10 @@ func (h apiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.r.ServeHTTP(w, r)
 }
 
-func NewHandler(q *pgstore.Queries, r *chi.Mux, upgrader websocket.Upgrader) http.Handler {
+func NewHandler(q *pgstore.Queries, r *chi.Mux) http.Handler {
 	a := apiHandler{
 		q:           q,
+		upgrader:    websocket.Upgrader{CheckOrigin: func(r *http.Request) bool { return true }},
 		subscribers: make(map[string]map[*websocket.Conn]context.CancelFunc),
 		mu:          &sync.Mutex{},
 	}
