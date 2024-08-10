@@ -1,10 +1,12 @@
-import { ArrowRight, Share2 } from "lucide-react";
+import { Share2 } from "lucide-react";
+import { Suspense } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 import amaLogo from "../assets/ama-logo.svg";
 import { Button } from "../components/button";
-import { Message } from "../components/message";
+import { Messages } from "../components/messages";
+import { SendMessageForm } from "../components/send-message-form";
 
 export function Room() {
   const { roomID } = useParams();
@@ -18,10 +20,6 @@ export function Room() {
       navigator.clipboard.writeText(url);
       toast.info(`${url} was copied to clipboard`);
     }
-  }
-
-  function handleSendMessage(data: FormData) {
-    console.log({ data, roomID });
   }
 
   return (
@@ -41,31 +39,13 @@ export function Room() {
           onClick={handleShareRoom}
         />
       </div>
-
       <div className="h-px w-full bg-zinc-900" />
 
-      <form
-        action={handleSendMessage}
-        className="flex items-center gap-2 bg-zinc-900  p-2 rounded-xl border border-zinc-800 ring-orange-400 ring-offset-3 ring-offset-zinc-950 focus-within:ring-1"
-      >
-        <input
-          className="flex-1 text-sm bg-transparent mx-2 outline-none placeholder:text-zinc-500 text-zinc-100"
-          type="text"
-          name="theme"
-          placeholder="Ask anything"
-          autoComplete="off"
-        />
-        <Button text="Send" Icon={ArrowRight} />
-      </form>
+      <SendMessageForm roomID={roomID} />
 
-      <ol className="list-decimal list-outside px-3 space-y-8">
-        <Message
-          answered
-          message="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis suscipit est. Morbi sollicitudin lacus a odio gravida lacinia. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed tortor est, rhoncus at mollis rutrum, luctus in elit. Nulla feugiat hendrerit pellentesque."
-        />
-        <Message message="Phasellus id massa accumsan eros ullamcorper ornare. Donec lacus augue, porttitor sit amet lectus non, fermentum ullamcorper ante." />
-        <Message message="Nulla nec metus massa. Nam a urna vitae ex eleifend congue vel quis lacus. In nec mi aliquam, euismod felis id, pulvinar libero. Cras risus nulla, ullamcorper at interdum eu, mollis vel erat." />
-      </ol>
+      <Suspense fallback={<>Loading messages...</>}>
+        <Messages roomID={roomID} />
+      </Suspense>
     </div>
   );
 }

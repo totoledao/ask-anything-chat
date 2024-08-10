@@ -2,17 +2,23 @@ import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
+import { postCreateRoom } from "../api/rooms";
 import amaLogo from "../assets/ama-logo.svg";
 import { Button } from "../components/button";
 
 export function CreateRoom() {
   const navigate = useNavigate();
 
-  function handleCreateRoom(data: FormData) {
-    const theme = data.get("theme");
-    if (!theme) return toast.error("You have to choose a name for your room");
+  async function handleCreateRoom(data: FormData) {
+    const theme = data.get("theme")?.toString();
+    if (!theme) return;
 
-    navigate(`/room/${theme}`);
+    try {
+      const { id } = await postCreateRoom(theme);
+      navigate(`/room/${id}`);
+    } catch (err) {
+      toast.error(err?.toString());
+    }
   }
 
   return (
@@ -35,6 +41,7 @@ export function CreateRoom() {
             name="theme"
             placeholder="Room name"
             autoComplete="off"
+            required
           />
           <Button text="Create room" Icon={ArrowRight} />
         </form>
