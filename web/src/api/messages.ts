@@ -11,7 +11,7 @@ export async function postCreateRoomMessage({
   message,
 }: postCreateRoomMessageRequest) {
   const res = await fetch(`${API}/rooms/${id}/messages`, {
-    method: "post",
+    method: "POST",
     body: JSON.stringify({ message }),
   });
 
@@ -20,7 +20,7 @@ export async function postCreateRoomMessage({
 
 export async function getRoomMessages(id: string) {
   const res = await fetch(`${API}/rooms/${id}/messages`, {
-    method: "get",
+    method: "GET",
   });
 
   return <Message[]>await res.json();
@@ -36,7 +36,7 @@ export async function getRoomMessage({
   messageID,
 }: RoomMessageRequest) {
   const res = await fetch(`${API}/rooms/${roomID}/messages/${messageID}`, {
-    method: "get",
+    method: "GET",
   });
 
   return <Message>await res.json();
@@ -49,7 +49,7 @@ export async function addReactionFromMessage({
   const res = await fetch(
     `${API}/rooms/${roomID}/messages/${messageID}/react`,
     {
-      method: "patch",
+      method: "PATCH",
     }
   );
 
@@ -63,7 +63,7 @@ export async function deleteReactionFromMessage({
   const res = await fetch(
     `${API}/rooms/${roomID}/messages/${messageID}/react`,
     {
-      method: "delete",
+      method: "DELETE",
     }
   );
 
@@ -77,7 +77,7 @@ export async function markMessageAsAnswered({
   const res = await fetch(
     `${API}/rooms/${roomID}/messages/${messageID}/answer`,
     {
-      method: "patch",
+      method: "PATCH",
     }
   );
 

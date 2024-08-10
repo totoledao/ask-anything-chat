@@ -3,7 +3,7 @@ import { API } from "./constants";
 
 export async function postCreateRoom(theme: string) {
   const res = await fetch(`${API}/rooms`, {
-    method: "post",
+    method: "POST ",
     body: JSON.stringify({
       theme,
     }),
@@ -14,7 +14,7 @@ export async function postCreateRoom(theme: string) {
 
 export async function getRooms() {
   const res = await fetch(`${API}/rooms`, {
-    method: "get",
+    method: "GET",
   });
 
   return <Room[]>await res.json();
